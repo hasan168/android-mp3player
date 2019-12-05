@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             changeSeekbar();
                         }
                     });
-                    //mediaPlayer.start();
-                    //timeZone.setMax(mediaPlayer.getDuration());
                     btnPlay.setBackgroundResource(R.drawable.pause);
                     timeZone.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
