@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/msc1" android:icon="@drawable/music" android:title="music1"/>
-    <item android:id="@+id/msc2" android:icon="@drawable/music" android:title="music2"/>
+    <item android:id="@+id/msc1" android:icon="@drawable/music" android:title="A Watchful Guardian"/>
+    <item android:id="@+id/msc2" android:icon="@drawable/music" android:title="Time"/>
 
 </menu>

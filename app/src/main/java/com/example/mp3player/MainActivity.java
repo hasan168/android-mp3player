@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnPause.setOnClickListener(this);
 
     }
-
+    Integer pauseLength = 0 ;
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if ( mediaPlayer != null&&mediaPlayer.isPlaying())
                 {
                     mediaPlayer.pause();
+                    pauseLength = mediaPlayer.getCurrentPosition();
                     btnPlay.setBackgroundResource(R.drawable.play);
                     break;
                 }
@@ -63,15 +66,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else{
                         mediaPlayer = MediaPlayer.create(this, R.raw.awatchfulguardian);
                     }
-
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            timeZone.setMax(mediaPlayer.getDuration());
-                            mediaPlayer.start();
-                            changeSeekbar();
-                        }
-                    });
+                    timeZone.setMax(mediaPlayer.getDuration());
+                    if (!pauseLength.equals(0)){
+                        mediaPlayer.seekTo(pauseLength);
+                    }
+                    mediaPlayer.start();
+                    changeSeekbar();
                     btnPlay.setBackgroundResource(R.drawable.pause);
                     timeZone.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
@@ -95,7 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 }
             case R.id.button4:
-                mediaPlayer.reset();
+                if (!mediaPlayer.isPlaying()) {
+                    btnPlay.setBackgroundResource(R.drawable.pause);
+                    mediaPlayer.start();
+                    changeSeekbar();
+                }
+                mediaPlayer.seekTo(0);
                 break;
         }
     }
@@ -122,15 +127,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (String.valueOf(item.getTitle())){
-            case "music1":
+        int id = item.getItemId();
+        if(mediaPlayer != null) {
+            mediaPlayer.seekTo(0);
+            mediaPlayer.stop();
+        }
+        pauseLength = 0;
+        switch (id){
+            case R.id.msc1:
                 musicImage.setImageResource(R.drawable.batman);
                 musicName.setText("Hans Zimmer - A Watchful Guardian The Dark Knight");
                 break;
-            case "music2":
+            case R.id.msc2:
                 musicImage.setImageResource(R.drawable.inception);
                 musicName.setText("Hans Zimmer - Time Inception");
         }
+        btnPlay.setBackgroundResource(R.drawable.play);
+        //timeZone.setMax(mediaPlayer.getDuration());
         return super.onOptionsItemSelected(item);
     }
 }
