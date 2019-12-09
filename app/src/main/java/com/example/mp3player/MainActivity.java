@@ -131,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(mediaPlayer != null) {
             mediaPlayer.seekTo(0);
             mediaPlayer.stop();
+            timeZone.setMax(mediaPlayer.getDuration());
+            timeZone.setProgress(0);
+            mediaPlayer.seekTo(0);
         }
         pauseLength = 0;
         switch (id){
